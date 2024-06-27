@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies Data Visualization</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Movies Data Visualization</h1>
+    <header>
+        
+        <nav><ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="index.html">Movies</a></li>
+            <li><a href="about.html">About Us</a></li>
+            
+            <li><a href="statistics.html">Stats</a></li>
+            <li><a href="watchlist.html">Watchlist</a></li>
+          </ul>
+            
+        </nav>
+    </header>
+    <canvas id="barChart" width="400" height="200"></canvas>
+    <canvas id="pieChart" width="110" height="100"></canvas>
+
+  
+    
+    <script>
+        const movies = [
+    { title: "3 Idiots", imdbRating: 8.4, theme: "Comedy, Drama" },
+    { title: "Dangal", imdbRating: 8.4, theme: "Action, Biography, Drama" },
+    { title: "PK", imdbRating: 8.1, theme: "Comedy, Drama, Sci-Fi" },
+    { title: "Dabangg", imdbRating: 6.2, theme: "Action, Comedy, Drama" },
+    { title: "Chennai Express", imdbRating: 6.0, theme: "Action, Comedy, Drama" },
+    { title: "Om Shanti Om", imdbRating: 6.7, theme: "Action, Comedy, Drama" },
+    { title: "Main Hoon Na", imdbRating: 7.0, theme: "Action, Comedy, Drama" },
+    { title: "Mohabbatein", imdbRating: 7.1, theme: "Drama, Musical, Romance" },
+    { title: "Don 2", imdbRating: 7.1, theme: "Action, Crime, Thriller" },
+    { title: "Agneepath", imdbRating: 7.0, theme: "Action, Drama" },
+    { title: "Kabhi Khushi Kabhie Gham...", imdbRating: 7.4, theme: "Drama, Musical, Romance" },
+    { title: "Kal Ho Naa Ho", imdbRating: 7.6, theme: "Comedy, Drama, Romance" },
+    { title: "Raees", imdbRating: 6.8, theme: "Action, Crime, Drama" },
+    { title: "My Name Is Khan", imdbRating: 8.0, theme: "Drama" },
+    { title: "Kuch Kuch Hota Hai", imdbRating: 7.6, theme: "Drama, Musical, Romance" },
+    { title: "Jab Tak Hai Jaan", imdbRating: 6.8, theme: "Drama, Romance" },
+    { title: "Lagaan: Once Upon a Time in India", imdbRating: 8.1, theme: "Adventure, Drama, Musical" },
+    { title: "Bajrangi Bhaijaan", imdbRating: 8.0, theme: "Action, Comedy, Drama" },
+    { title: "Golmaal: Fun Unlimited", imdbRating: 7.4, theme: "Comedy, Drama" },
+    { title: "War", imdbRating: 6.5, theme: "Action, Thriller" },
+    { title: "Barfi!", imdbRating: 8.1, theme: "Comedy, Drama, Romance" },
+    {
+        title: "Dil Chahta Hai",
+        imdbRating: 8.1,
+        theme: "Comedy, Drama, Romance"
+    },
+    {
+        title: "Rang De Basanti",
+        imdbRating: 8.2,
+        theme: "Comedy, Drama"
+    },
+    {
+        title: "Taare Zameen Par",
+        imdbRating: 8.4,
+        theme: "Drama, Family"
+    },
+    {
+        title: "3 Idiots",
+        imdbRating: 8.4,
+        theme: "Comedy, Drama"
+    },
+    {
+        title: "Bhaag Milkha Bhaag",
+        imdbRating: 8.2,
+        theme: "Action, Biography, Drama"
+    },
+    {
+        title: "Happy New Year",
+        imdbRating: 5.0,
+        theme: "Action, Comedy, Drama"
+    },
+    {
+        title: "Kabir Singh",
+        imdbRating: 7.1,
+        theme: "Action, Drama, Romance"
+    },
+    {
+        title: "Yeh Jawaani Hai Deewani",
+        imdbRating: 7.2,
+        theme: "Drama, Musical, Romance"
+    },
+    {
+        title: "Ek Tha Tiger",
+        imdbRating: 5.5,
+        theme: "Action, Adventure, Romance"
+    },
+    {
+        title: "Gully Boy",
+        imdbRating: 7.9,
+        theme: "Drama, Music"
+    },
+    {
+        title: "Airlift",
+        imdbRating: 8.1,
+        theme: "Action, Drama, History"
+    }
+        ];
+
+        // Extracting data for the bar chart
+        const titles = movies.map(movie => movie.title);
+        const ratings = movies.map(movie => movie.imdbRating);
+
+        // Extracting data for the pie chart
+        const themeCounts = {};
+        movies.forEach(movie => {
+            const themes = movie.theme.split(', ');
+            themes.forEach(theme => {
+                if (themeCounts[theme]) {
+                    themeCounts[theme]++;
+                } else {
+                    themeCounts[theme] = 1;
+                }
+            });
+        });
+
+        const themeLabels = Object.keys(themeCounts);
+        const themeData = Object.values(themeCounts);
+
+        // Creating the bar chart
+        
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        const barChart = new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: titles,
+                datasets: [{
+                    label: 'IMDb Ratings',
+                    data: ratings,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Rating'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Movie Titles'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Creating the pie chart
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        const pieChart = new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: themeLabels,
+                datasets: [{
+                    label: 'Movie Themes',
+                    data: themeData,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Distribution of Movie Themes'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
